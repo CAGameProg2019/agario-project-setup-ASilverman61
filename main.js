@@ -4,18 +4,22 @@ let c = canvas.getContext('2d');
 canvas.width = innerWidth-20;
 canvas.height = innerHeight-20;
 
-playerName = prompt("Enter Name: ");
-
 let mousepos;
 
 let colors = [
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "blue",
-  "purple",
-  "pink"
+  "#FBFDB3",
+  "#A3E6E5",
+  "#8BCEE4",
+  "#BFBFBF",
+  "#69B263"
+];
+
+let strokeColors = [
+  "#FCFF8C",
+  "#89E7E5",
+  "#6CBED8",
+  "#A2A2A2",
+  "#529C4C"
 ];
 
 function randomColor() {
@@ -40,8 +44,13 @@ let foods = [];
 function init() {
 
   mousepos = new Vector(canvas.width/2, canvas.height/2);
-s
-  player = new Player(canvas.width/2, canvas.height/2, 30, randomColor());
+
+  let name = prompt("Enter Name: ");
+
+  let color = randomColor();
+  let stroke = strokeColors[colors.indexOf(color)];
+
+  player = new Player(canvas.width/2, canvas.height/2, 30, color, stroke, name, 8);
   for (var i = 0; i <= FOOD_COUNT; i++) {
     generateFood();
   }
@@ -52,8 +61,7 @@ s
 function update() {
   c.clearRect(0,0,canvas.width, canvas.height);
 
-  player.x = mousepos.x;
-  player.y = mousepos.y;
+  player.update(mousepos);
 
   for(var i = 0; i < foods.length; i++){
     let eaten = player.intersects(foods[i]);
@@ -66,12 +74,11 @@ function update() {
     }
   }
 
-while (foods.length < FOOD_COUNT) {
-  generateFood();
-}
+  while (foods.length < FOOD_COUNT) {
+    generateFood();
+  }
 
-  player.draw(c,playerName);
-
+  player.draw(c);
 
   requestAnimationFrame(update);
 }
