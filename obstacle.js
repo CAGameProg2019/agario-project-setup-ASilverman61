@@ -1,4 +1,4 @@
-class Obstacle extends Food {
+class Obstacles extends Food {
 
   constructor(x, y, radius, color) {
     super(x, y);

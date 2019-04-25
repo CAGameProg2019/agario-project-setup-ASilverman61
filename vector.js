@@ -26,9 +26,9 @@ class Vector {
   toString() {
     return '<'+this.x+','+this.y+'>'
   }
-  print() {
-    console.log(this.toString());
-  }
+  // print() {
+  //   console.log(this.toString());
+  // }
 
   dist(vec){
     let x = vec.x-this.x;

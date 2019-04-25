@@ -39,9 +39,9 @@ function generateFood() {
 function generateObstacles(){
   let x = Math.random() * canvas.width;
   let y = Math.random() * canvas.height;
-  let radius = 10;
+  let radius = 20;
   let color = "red";
-  let obstacle = new Obstacle(x, y, radius, color);
+  let obstacle = new Food(x, y, radius, color);
   obstacles.push(obstacle);
 
 }
@@ -53,6 +53,8 @@ const OBSTACLE_COUNT = 10;
 let player;
 let foods = [];
 let obstacles = [];
+
+
 
 function init() {
 
@@ -88,34 +90,37 @@ function update() {
       i--;
     }
   }
+  for (var i =0; i < obstacles.length; i++){
+    let crash = player.intersects(obstacles[i]);
+    if(!crash) {
+      obstacles[i].draw(c);
+    } else {
+      player.addMass(-(2.5*obstacles[i].mass));
+      obstacles.splice(i,1);
+      i--;
+    }}
 
-let crash = player.intersects(obstacles[i]);
-  if(!crash) {
-    obstacles[i].draw(c);
-  } else {
-    player.removeMass(obstacles[i].mass);
-    obstacles.splice(i,1);
-    i--;
+    while (foods.length < FOOD_COUNT) {
+      generateFood();
+    }
+    while (obstacles.length < OBSTACLE_COUNT){
+      generateObstacles();
+    }
+
+    player.draw(c);
+
+    requestAnimationFrame(update);
   }
-  
-  while (foods.length < FOOD_COUNT) {
-    generateFood();
-  }
+  window.addEventListener('load', function(event) {
 
-  }
-  player.draw(c);
+    init();
 
-  requestAnimationFrame(update);
+    window.addEventListener('mousemove', function(event){
+      //console.log(event.clientX, event.clientY);
+      mousepos.x = event.clientX - canvas.offsetLeft;
+      mousepos.y = event.clientY - canvas.offsetTop;
+      // mousepos.print();
 
-window.addEventListener('load', function(event) {
-  init();
-
-  window.addEventListener('mousemove', function(event){
-    //console.log(event.clientX, event.clientY);
-    mousepos.x = event.clientX - canvas.offsetLeft;
-    mousepos.y = event.clientY - canvas.offsetTop;
-    mousepos.print();
+    });
 
   });
-
-});
