@@ -21,7 +21,7 @@ class Player extends Food{
         velocity.scale(dist/this.radius);
     }
 
-    this.addVector(velocity);
+  this.addVector(velocity);
     }
   }
 

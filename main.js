@@ -36,10 +36,23 @@ function generateFood() {
   foods.push(food);
 }
 
+function generateObstacles(){
+  let x = Math.random() * canvas.width;
+  let y = Math.random() * canvas.height;
+  let radius = 10;
+  let color = "red";
+  let obstacle = new Obstacle(x, y, radius, color);
+  obstacles.push(obstacle);
+
+}
+
 const FOOD_COUNT = 100;
+const OBSTACLE_COUNT = 10;
+
 
 let player;
 let foods = [];
+let obstacles = [];
 
 function init() {
 
@@ -54,7 +67,9 @@ function init() {
   for (var i = 0; i <= FOOD_COUNT; i++) {
     generateFood();
   }
-
+  for (var i =0;i <= OBSTACLE_COUNT; i++){
+    generateObstacles();
+  }
   update();
 }
 
@@ -74,14 +89,23 @@ function update() {
     }
   }
 
+let crash = player.intersects(obstacles[i]);
+  if(!crash) {
+    obstacles[i].draw(c);
+  } else {
+    player.removeMass(obstacles[i].mass);
+    obstacles.splice(i,1);
+    i--;
+  }
+  
   while (foods.length < FOOD_COUNT) {
     generateFood();
   }
 
+  }
   player.draw(c);
 
   requestAnimationFrame(update);
-}
 
 window.addEventListener('load', function(event) {
   init();
